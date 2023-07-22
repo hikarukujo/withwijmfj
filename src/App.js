@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './App.css';
 
-const latitude = 50.052430;
-const longitude = 8.572340;
+const latitude = 35.220711;
+const longitude = -80.944420;
 
 const App = () => {
   const [location, setLocation] = useState({});
