@@ -16,6 +16,7 @@ jobs:
     name: Build and Deploy Job
     env:
       REACT_APP_OPENCAGE_API_KEY: ${{ secrets.REACT_APP_OPENCAGE_API_KEY }}
+      REACT_APP_BEARER_TOKEN: ${{ secrets.REACT_APP_BEARER_TOKEN }}
     steps:
       - uses: actions/checkout@v3
         with:
