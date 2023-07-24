@@ -1,11 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './App.css';
+import { MapContainer, TileLayer, Marker, Tooltip } from 'react-leaflet';
+import { Icon } from 'leaflet';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner, faTimes } from '@fortawesome/free-solid-svg-icons';
+import JMFJ from './jmfj.png';
+
+const customIcon = new Icon({
+  iconUrl: JMFJ,
+  iconSize: [100, 147], // size of the icon
+  iconAnchor: [50, 73], // point of the icon which will correspond to marker's location
+});
 
 const App = () => {
   const [location, setLocation] = useState({});
+  const [coordinates, setCoordinates] = useState([51.505, -0.09]); // Default to London
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
@@ -17,6 +27,7 @@ const App = () => {
         });
 
         const { latitude, longitude } = response.data.location;
+        setCoordinates([latitude, longitude]);
         return { latitude, longitude };
       } catch (error) {
         setError(true);
@@ -57,12 +68,18 @@ const App = () => {
         ) : error ? (
           <FontAwesomeIcon icon={faTimes} />
         ) : (
-          <div>
-            <h2 style={{ textAlign: 'center', fontWeight: 'bold' }}>
-              {location.city}, {location.state}
-              <br />
-              {location.country}
-            </h2>
+          <div style={{ height: '90vh', width: '100%' }}>
+            <MapContainer center={coordinates} zoom={7} style={{ height: "100%", width: "100%" }} minZoom={4} maxZoom={7} scrollWheelZoom={false}>
+              <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              <Marker position={coordinates} icon={customIcon}>
+                <Tooltip permanent direction="left" offset={[-11, 39]} opacity={1} >
+                  {location.city}, {location.state}<br />
+                  {location.country}
+                </Tooltip>
+              </Marker>
+            </MapContainer>
           </div>
         )}
       </header>
