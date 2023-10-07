@@ -18,6 +18,7 @@ const App = () => {
   const [coordinates, setCoordinates] = useState([51.505, -0.09]); // Default to London
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [cachedData, setCachedData] = useState({ timestamp: null, location: null });
 
   useEffect(() => {
     const fetchLocationData = async () => {
