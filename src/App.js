@@ -21,12 +21,23 @@ const App = () => {
 
   useEffect(() => {
     const fetchLocationData = async () => {
+      // Check if cached data is available and less than 60 minutes old
+      const currentTime = new Date().getTime();
+      const oneHour = 60 * 60 * 1000;
+      if (cachedData.location && (currentTime - cachedData.timestamp) < oneHour) {
+        const { latitude, longitude } = cachedData.location;
+        setCoordinates([latitude, longitude]);
+        return { latitude, longitude };
+      }
+
       try {
         const response = await axios.get('https://api.life360.com/v3/circles/e54367f0-24b6-4cc3-94da-29d998174daa/members/8f1d8944-bb77-48c6-91f5-c0a181f31b3b', {
           headers: { Authorization: `Bearer ${process.env.REACT_APP_BEARER_TOKEN}` }
         });
 
         const { latitude, longitude } = response.data.location;
+        // Cache the data with the current timestamp
+        setCachedData({ timestamp: new Date().getTime(), location: { latitude, longitude } });
         setCoordinates([latitude, longitude]);
         return { latitude, longitude };
       } catch (error) {
