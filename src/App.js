@@ -30,7 +30,7 @@ const App = () => {
         setCoordinates([latitude, longitude]);
         return { latitude, longitude };
       }
-      console.log(process.env.BEARER_TOKEN)
+      console.log(process.env)
       try {
         const response = await axios.get('https://api.life360.com/v3/circles/e54367f0-24b6-4cc3-94da-29d998174daa/members/8f1d8944-bb77-48c6-91f5-c0a181f31b3b', {
           headers: { Authorization: `Bearer ${process.env.REACT_APP_BEARER_TOKEN}` }
